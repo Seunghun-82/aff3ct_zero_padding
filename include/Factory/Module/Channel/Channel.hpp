@@ -26,6 +26,8 @@ class Channel : public Factory
     // ----------------------------------------------------------------------------------------------------- PARAMETERS
     // required parameters
     int N = 0;
+    int dec_granularity = 0;
+    int parity_size = 0;
 
     // optional parameters
     std::string type = "AWGN";

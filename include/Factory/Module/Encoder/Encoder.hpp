@@ -26,6 +26,7 @@ class Encoder : public Factory
     // required parameters
     int K = 0;
     int N_cw = 0;
+    int dec_granularity = 0;
 
     // optional parameters
     std::string type = "AZCW";

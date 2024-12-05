@@ -30,7 +30,8 @@ Source ::get_description(cli::Argument_map_info& args) const
 
     tools::add_arg(
       args, p, class_name + "p+info-bits,K", cli::Integer(cli::Positive(), cli::Non_zero()), cli::arg_rank::REQ);
-
+    tools::add_arg(
+      args, p, class_name + "p+dec-granularity", cli::Integer(cli::Positive(), cli::Non_zero()), cli::arg_rank::REQ);
     tools::add_arg(args, p, class_name + "p+type", cli::Text(cli::Including_set("RAND", "AZCW", "USER", "USER_BIN")));
 
     tools::add_arg(args, p, class_name + "p+implem", cli::Text(cli::Including_set("STD", "FAST")));
@@ -52,6 +53,7 @@ Source ::store(const cli::Argument_map_value& vals)
     auto p = this->get_prefix();
 
     if (vals.exist({ p + "-info-bits", "K" })) this->K = vals.to_int({ p + "-info-bits", "K" });
+    if (vals.exist({ p + "-dec-granularity"})) this->dec_granularity = vals.to_int({p + "-dec-granularity"});
     if (vals.exist({ p + "-type" })) this->type = vals.at({ p + "-type" });
     if (vals.exist({ p + "-implem" })) this->implem = vals.at({ p + "-implem" });
     if (vals.exist({ p + "-path" })) this->path = vals.to_file({ p + "-path" });
@@ -87,7 +89,7 @@ Source ::build() const
     if (this->type == "RAND")
     {
         if (this->implem == "STD")
-            return new spu::module::Source_random<B>(this->K, this->seed);
+            return new spu::module::Source_random<B>(this->K, this->dec_granularity, this->seed);
         else if (this->implem == "FAST")
             return new module::Source_random_fast<B>(this->K, this->seed);
     }

@@ -55,6 +55,8 @@ Encoder_LDPC ::get_description(cli::Argument_map_info& args) const
     tools::add_arg(args, p, class_name + "p+g-method", cli::Text(cli::Including_set("IDENTITY", "LU_DEC")));
 
     tools::add_arg(args, p, class_name + "p+g-save-path", cli::File(cli::openmode::write));
+
+    tools::add_arg(args, p, class_name + "p+dec-granularity", cli::Integer(cli::Positive(), cli::Non_zero()), cli::arg_rank::REQ);
 }
 
 void
@@ -67,6 +69,7 @@ Encoder_LDPC ::store(const cli::Argument_map_value& vals)
     if (vals.exist({ p + "-h-reorder" })) this->H_reorder = vals.at({ p + "-h-reorder" });
     if (vals.exist({ p + "-g-method" })) this->G_method = vals.at({ p + "-g-method" });
     if (vals.exist({ p + "-g-save-path" })) this->G_save_path = vals.at({ p + "-g-save-path" });
+    if (vals.exist({ p + "-dec-granularity" })) this->dec_granularity = vals.to_int({ p + "-dec-granularity"});
 
     if (!this->G_path.empty())
     {

@@ -95,6 +95,7 @@ Simulation_BFER_std<B, R, Q>::build_channel(const tools::Distributions<R>* distr
     {
         auto chn = std::unique_ptr<module::Channel<R>>(params_BFER_std.chn->build<R>());
         chn->set_n_frames(this->params.n_frames);
+        chn->set_params(this->params_BFER_std.chn->dec_granularity, this->params_BFER_std.chn->parity_size);
         return chn;
     }
 }
@@ -195,15 +196,17 @@ Simulation_BFER_std<B, R, Q>::bind_sockets()
     }
     else
     {
-        if (this->params_BFER_std.crc->type != "NO")
+        if (this->params_BFER_std.crc->type != "NO"){
             crc[crc::sck::build::U_K1] = src[spu::module::src::sck::generate::out_data];
+        }
 
         if (this->params_BFER_std.cdc->enc->type != "NO")
         {
             if (this->params_BFER_std.crc->type != "NO")
                 enc[enc::sck::encode::U_K] = crc[crc::sck::build::U_K2];
-            else
+            else{
                 enc[enc::sck::encode::U_K] = src[spu::module::src::sck::generate::out_data];
+            }
         }
 
         if (this->params_BFER_std.cdc->pct != nullptr && this->params_BFER_std.cdc->pct->type != "NO")

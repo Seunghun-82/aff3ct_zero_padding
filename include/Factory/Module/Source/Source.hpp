@@ -25,7 +25,7 @@ class Source : public Factory
     // ----------------------------------------------------------------------------------------------------- PARAMETERS
     // required parameters
     int K = 0;
-
+    int dec_granularity = 0;
     // optional parameters
     std::string type = "RAND";
     std::string implem = "STD";

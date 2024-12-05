@@ -109,8 +109,7 @@ Channel_binary_symmetric<R>::_add_noise(const float* CP, const R* X_N, R* Y_N, c
     const mipp::Reg<R> r_1 = (R)1.0;
 
     const auto vec_loop_size = (this->N / mipp::nElReg<R>()) * mipp::nElReg<R>();
-
-    for (auto i = 0; i < vec_loop_size; i += mipp::nElReg<R>())
+    for (auto i = 0; i < this->dec_granularity + this->parity_size; i += mipp::nElReg<R>())
     {
         const mipp::Reg<R> r_in = X_N + i;
         const mipp::Reg<E> r_event = event_draw + i;
@@ -122,8 +121,14 @@ Channel_binary_symmetric<R>::_add_noise(const float* CP, const R* X_N, R* Y_N, c
         r_out.store(Y_N + i);
     }
 
-    for (auto i = vec_loop_size; i < this->N; i++)
-        Y_N[i] = event_draw[i] != (X_N[i] == (R)0.0) ? (R)0.0 : (R)1.0;
+    for (auto i = this->dec_granularity + this->parity_size; i < this->N; i++){
+        Y_N[i] = (X_N[i] == (R)0.0) ? (R)0.0: (R)1.0;
+    }
+    
+    for(auto i = this->dec_granularity + this->parity_size; i < this->N; i++){
+        assert((X_N[i] == Y_N[i]));
+        assert((X_N[i] == 0));
+    }
 }
 
 // ==================================================================================== explicit template instantiation

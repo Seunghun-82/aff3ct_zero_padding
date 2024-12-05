@@ -67,6 +67,8 @@ class Channel
 
   protected:
     const int N;                // Size of one frame (= number of bits in one frame)
+    int dec_granularity = 0;
+    int parity_size = 0;
     std::vector<R> noised_data; // vector of the noise applied to the signal
 
   public:
@@ -126,6 +128,11 @@ class Channel
                       R* Y_N,
                       const int frame_id = -1,
                       const bool managed_memory = true);
+
+    void set_params(int dec_granularity_, int parity_size_){
+      dec_granularity = dec_granularity_;
+      parity_size = parity_size_;
+    };
 
     virtual void set_n_frames(const size_t n_frames);
 

@@ -55,6 +55,7 @@ class Encoder
   protected:
     const int K;                         /*!< Number of information bits in one frame */
     const int N;                         /*!< Size of one frame (= number of bits in one frame) */
+    int dec_granularity = 0;
     bool sys;                            /*!< Is the generated codeword systematic ? */
     bool memorizing;                     /*!< If true, keep the last encoded frame(s) in memory */
     std::vector<uint32_t> info_bits_pos; /*!< Positions of the information bits in the codeword */

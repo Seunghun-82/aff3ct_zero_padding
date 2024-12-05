@@ -46,9 +46,16 @@ Encoder_LDPC_from_QC<B>::_encode(const B* U_K, B* X_N, const size_t frame_id)
     // Calculate parity part
     mipp::vector<int8_t> parity(M, 0);
 
+    int zero_padding_size = this->N - this->dec_granularity - M;
+    std::cout << "ENCODER\n";
+    for (auto i = 0; i < zero_padding_size; i++){
+        std::cout << i << " " << X_N[i + this->dec_granularity] << "\n";
+        X_N[i + this->dec_granularity] = 0;
+    }
+
     for (auto i = 0; i < M; i++)
         for (auto& l : this->H.get_rows_from_col(i))
-            if (l < (unsigned)this->K) parity[i] ^= U_K[l];
+            if (l < (unsigned)this->K && l < this->dec_granularity) parity[i] ^= U_K[l];
 
     auto* X_N_ptr = X_N + this->K;
     for (auto i = 0; i < M; i++)

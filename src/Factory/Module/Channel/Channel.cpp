@@ -42,6 +42,12 @@ Channel ::get_description(cli::Argument_map_info& args) const
     tools::add_arg(
       args, p, class_name + "p+fra-size,N", cli::Integer(cli::Positive(), cli::Non_zero()), cli::arg_rank::REQ);
 
+    tools::add_arg(
+      args, p, class_name + "p+dec-granularity", cli::Integer(cli::Positive(), cli::Non_zero()), cli::arg_rank::REQ);
+    
+    tools::add_arg(
+      args, p, class_name + "p+parity-size", cli::Integer(cli::Positive(), cli::Non_zero()), cli::arg_rank::REQ);    
+
     tools::add_arg(args,
                    p,
                    class_name + "p+type",
@@ -93,6 +99,8 @@ Channel ::store(const cli::Argument_map_value& vals)
     if (vals.exist({ p + "-blk-fad" })) this->block_fading = vals.at({ p + "-blk-fad" });
     if (vals.exist({ p + "-add-users" })) this->add_users = true;
     if (vals.exist({ p + "-complex" })) this->complex = true;
+    if (vals.exist({ p + "-dec-granularity" })) this->dec_granularity = vals.to_int({ p + "-dec-granularity"});
+    if (vals.exist({ p + "-parity-size" })) this->parity_size = vals.to_int({ p + "-parity-size"});
 }
 
 void
